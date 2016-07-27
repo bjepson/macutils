@@ -5,9 +5,10 @@ use DateTime;
 use Time::Duration;
 
 my %events;
-open (PMSET, "pmset -g log |") or die "Couldn't launch pmset: $!";
+open (PMSET, "pmset -g log | egrep -i 'using (ac|batt)' |") 
+    or die "Couldn't launch pmset: $!";
+
 while(<PMSET>) {
-    next unless /Using/i;
     %events = () if /Using AC/i;
     my $datetime;
     if (/(\d+)-(\d+)-(\d+)\s(\d+):(\d+):(\d+)/) {
